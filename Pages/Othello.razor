@@ -1,0 +1,154 @@
+@page "/othello"
+<h1>Hello</h1>
+
+<input type="text" @bind=@strCords[0]>
+<input type="text" @bind=@strCords[1]>
+
+<button @onclick="load">Indsæt tal</button>
+
+<table class="table">
+  @for(int i=0; i<8; i++)
+  {
+    <tr>
+    @for(int j=0; j<8; j++)
+    {
+      <td>
+        @bræt[i, j]
+      </td>
+
+    }
+    </tr>
+  }
+
+
+</table>
+
+
+
+@code
+{
+/*  protected override async Task OnInitializedAsync()
+  {
+
+  }
+*/
+  public string[]? strCords = new string[2];
+
+  public (int x, int y) intCords;
+
+  public string turn = "x";
+  public void load()
+  {
+    intCords = (int.Parse(strCords[0]), int.Parse(strCords[1]));
+
+    // updater brættet
+    updateBoard(bræt, intCords, turn);
+
+    if (turn=="x")
+    {
+      turn = "o";
+    }
+    else 
+    {
+      turn = "x";
+    }
+  }
+
+  public string[,] bræt = {
+    {"_", "_", "_", "_", "_", "_", "_", "_"},
+    {"_", "_", "_", "_", "_", "_", "_", "_"},
+    {"_", "_", "_", "_", "_", "_", "_", "_"},
+    {"_", "_", "_", "x", "o", "_", "_", "_"},
+    {"_", "_", "_", "o", "x", "_", "_", "_"},
+    {"_", "_", "_", "_", "_", "_", "_", "_"},
+    {"_", "_", "_", "_", "_", "_", "_", "_"},
+    {"_", "_", "_", "_", "_", "_", "_", "_"}
+  };
+
+  public (int x, int y) checkingCords;
+  public string[,] updateBoard(string[,] board, (int x, int y) diskPos, string color) //board er 8x8, og diskPos er (y,x). Y målt oppefra og ned
+  {
+    // definerer brættet som udgangspunkt
+    string[,] ret = board;
+
+    // opdaterer brættet med det nye bræt
+    ret[diskPos.x, diskPos.y]=color;
+
+    ////  vi skal nu opdatere brættet. 
+
+    // vi vil tjekke alle retninger, 
+    int [,] directions = {{0,1}, {1,1}, {1,0}, {1,-1}, {0,-1}, {-1,-1}, {-1,0}, {-1,1}};
+
+    // toBeMarked er listen med koordinater af alle ting der skal vendes til en ny farve
+    // tempToBeMarked er alle dem, der 'måske' skal vendes.
+    List<(int, int)> toBeMarked = new List<(int x, int y)>();
+    List<(int, int)> tempToBeMarked = new List<(int x, int y)>();
+    
+    int dir1;
+    int dir2;
+
+    int[] checkedCords = new int[2];
+    
+
+    // kører følgende kode i hver retning
+    for (int i=0; i<8; i++) 
+    {
+      tempToBeMarked = new List<(int x, int y)>();
+      dir1 = directions[i, 0];
+      dir2 = directions[i, 1];
+
+      int j = 0; // index for hvor langt ud vi går 
+      while (true) 
+      {
+        j++;
+        // hvis vi er ude af brættet
+        if ( !(0<=diskPos.x+j*dir1 && diskPos.x+j*dir1<=7 && 0<=diskPos.y+j*dir2 && diskPos.y+j*dir2<=7) ) 
+        {
+          break;
+        }
+
+        // hvis systemet tjekker en ensfarvet
+        if (board[diskPos.x+j*dir1, diskPos.y+j*dir2] == color) 
+        {
+          // tilføjer lige alle de diske der skal vendes.
+          foreach ((int, int) disk in tempToBeMarked) 
+          {
+              toBeMarked.Add((disk.Item1, disk.Item2));
+          }
+          break;
+        }
+
+        // hvis sys tjekker en tom
+        else if (board[diskPos.x+j*dir1, diskPos.y+j*dir2] == "_") 
+        {
+          break;
+        }
+
+        // hvis det er modstanders brik
+        else 
+        {
+          tempToBeMarked.Add((diskPos.x+j*dir1, diskPos.y+j*dir2));
+        }
+
+      }
+
+    }
+    foreach ((int x, int y) pos in toBeMarked)
+    {
+      Console.Write(pos.x);
+      Console.WriteLine(pos.y);
+    }
+
+    // opdater boardet!
+    foreach ((int x, int y) pos in toBeMarked)
+    {
+      ret[pos.x, pos.y] = color;
+    }
+
+
+    // returnerer det nye bræt
+    return ret;
+  }
+
+
+}
