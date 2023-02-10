@@ -53,29 +53,34 @@
   public string turn = "x";
   public void load()
   {
-    intCords = (int.Parse(strCords[0]), int.Parse(strCords[1]));
+    intCords = (int.Parse(strCords[0])-1, int.Parse(strCords[1])-1);
 
     // updater brættet 
-    bræt = updateBoard(bræt, intCords, turn); // øhmmm altså man behøver ikke at sige "bræt=" og så virker det stadig??
-
-    if (turn=="x")
+    if (updateBoard(bræt, intCords, turn) == 0) 
     {
-      turn = "o";
-    }
-    else 
-    {
-      turn = "x";
-    }
+      if (turn=="x")
+      {
+        turn = "o";
+      }
+      else 
+      {
+        turn = "x";
+      }
+    } 
+    
+    // KUN HVIS MAN GODT KAN LIGGE BRIKKEN
+    
   }
 
   public (int x, int y) checkingCords;
-  public string[,] updateBoard(string[,] board, (int x, int y) diskPos, string color) //board er 8x8, og diskPos er (y,x). Y målt oppefra og ned
+  // note. åbentbart når man vi ændrer på 'ret' ændrer vi direkte på 'board' og dermed 'bræt'
+  // vi ændrer altså på selve listen fordi den refererer til stedet i hukkomelsen hvor listen ligger, frem for at lave en duplicate
+  // derfor returnerer vi et tal (0) hvis programmet er succes, (1), hvis der ikke bliver ændret på nogle brikker.
+  public int updateBoard(string[,] board, (int x, int y) diskPos, string color) //board er 8x8, og diskPos er (y,x). Y målt oppefra og ned
   {
     // definerer brættet som udgangspunkt
     string[,] ret = board;
 
-    // opdaterer brættet med det nye bræt
-    ret[diskPos.x, diskPos.y]=color;
 
     ////  vi skal nu opdatere brættet. 
 
@@ -149,12 +154,18 @@
     }
 
     // hvis der ikke er nogle brikker der skal ændres, skal den give en fejlbesked
-    /*if (toBeMarked.Count==0)
+    if (toBeMarked.Count==0)
     {
-      return new string[1,1];
-    }*/
+      return (1);
+    }
+
+    // opdaterer brættet med det nye bræt
+    ret[diskPos.x, diskPos.y]=color;
+
     // returnerer det nye bræt
-    return ret;
+
+
+    return (0);
   }
 
 
