@@ -5,17 +5,19 @@
 <input type="text" @bind=@strCords[1]>
 
 <button @onclick="load">Indsæt tal</button>
+<button @onclick="startup">Start spillet forfra</button>
+
 <br>
 <h3>@errorMessage <br></h3>
 <h2>Det er @turn 's tur</h2>
 
-<table class="table" style="width:15%">
+<table class="table" style="width:200px; table-layout:fixed;">
   @for(int i=0; i<8; i++)
   {
     <tr>
     @for(int j=0; j<8; j++)
     {
-      <td>
+      <td style="heigh:200px;">
         @bræt[i, j]
       </td>
 
@@ -49,6 +51,26 @@
   public (int x, int y) intCords;
 
   public string turn = "x";
+
+  // metode der bliver kaldt når spillet skal startes forfra 
+  public void startup()
+  {
+    bræt = new string[8,8] {
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "x", "o", "-", "-", "-"},
+    {"-", "-", "-", "o", "x", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"}
+  };
+    turn = "x";
+    availableSpots(bræt, turn);
+    return;
+  }
+
+  // metode der bliver kaldt, hver gang der sker et træt
   public void load()
   {
     intCords = (8-int.Parse(strCords[1]), int.Parse(strCords[0])-1);
@@ -79,15 +101,21 @@
     (int x, int y) pos;
     // tjekker bare for alle pladser: hvis der bliver vendt en brik når man ligger der, er det et available spot.
     for (int row=0; row<8; row++){
+
       for (int column=0; column<8; column++){
+
         pos.x = row;
         pos.y = column;
+
         // hvis man godt må ligge sin brik (evt. oveni)
         if (turningDisks(board, pos, color).Count != 0) {
+
           // hvis brikken endda også er tom
           if (board[row, column] == "-" || board[row, column] == "M"){
             board[row, column] = "M";
           }
+
+        // hvis man ikke kan ligge en brik, men brikken er markeret, skal vi lige fjerne markeringen
         } else if (board[row, column] == "M") {
           board[row, column] = "-";
         }
