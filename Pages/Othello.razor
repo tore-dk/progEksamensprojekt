@@ -7,6 +7,7 @@
 <button @onclick="load">Indsæt tal</button>
 <br>
 <h3>@errorMessage <br></h3>
+<h2>Det er @turn 's tur</h2>
 
 <table class="table" style="width:15%">
   @for(int i=0; i<8; i++)
@@ -70,35 +71,13 @@
         turn = "x";
       }
     } 
-    
-    // KUN HVIS MAN GODT KAN LIGGE BRIKKEN
-    
   }
 
-  public (int x, int y) checkingCords;
-  // note. åbentbart når man vi ændrer på 'ret' ændrer vi direkte på 'board' og dermed 'bræt'
-  // vi ændrer altså på selve listen fordi den refererer til stedet i hukkomelsen hvor listen ligger, frem for at lave en duplicate
-  // derfor returnerer vi et tal (0) hvis programmet er succes, (1), hvis der ikke bliver ændret på nogle brikker.
-  public string updateBoard(string[,] board, (int x, int y) diskPos, string color) //board er 8x8, og diskPos er (y,x). Y målt oppefra og ned
+  // deciding which disks to turn. Returns a list with the coordinates to the lists that should be turned.
+  public List<(int x, int y)> turningDisks(string[,] board, (int x, int y) diskPos, string color)
   {
-    // definerer brættet som udgangspunkt
-    string[,] ret = board;
-
-    // hvis brikken ikke kan ligge på brættet. Denne skal være før den næste fejlbesked
-    if (!(0<=diskPos.x && diskPos.x<=7 && 0<=diskPos.y && diskPos.y<=7))
-    {
-      return ("Der er valgt en brik der ligger uden for brættet.");
-    }
-
-    // hvis der allerede er en brik på den plads
-    if (ret[diskPos.x, diskPos.y] != "-")
-    {
-      return ("Denne plads er allerede optaget af en anden brik");
-    }
-
-    
-
-    ////  vi skal nu opdatere brættet. 
+    // laver en liste som er den liste der skal returneres.
+    List<(int x, int y)> ret = new List<(int x, int y)>();
 
     // vi vil tjekke alle retninger, 
     int [,] directions = {{0,1}, {1,1}, {1,0}, {1,-1}, {0,-1}, {-1,-1}, {-1,0}, {-1,1}};
@@ -163,7 +142,36 @@
       Console.WriteLine(pos.y);
     }
 
-    // opdater boardet!
+    return toBeMarked;
+  }
+
+  public (int x, int y) checkingCords;
+  // note. åbentbart når man vi ændrer på 'ret' ændrer vi direkte på 'board' og dermed 'bræt'
+  // vi ændrer altså på selve listen fordi den refererer til stedet i hukkomelsen hvor listen ligger, frem for at lave en duplicate
+  // derfor returnerer vi et tal (0) hvis programmet er succes, (1), hvis der ikke bliver ændret på nogle brikker.
+  public string updateBoard(string[,] board, (int x, int y) diskPos, string color) //board er 8x8, og diskPos er (y,x). Y målt oppefra og ned
+  {
+    // definerer brættet som udgangspunkt
+    string[,] ret = board;
+
+    // hvis brikken ikke kan ligge på brættet. Denne skal være før den næste fejlbesked
+    if (!(0<=diskPos.x && diskPos.x<=7 && 0<=diskPos.y && diskPos.y<=7))
+    {
+      return ("Der er valgt en brik der ligger uden for brættet.");
+    }
+
+    // hvis der allerede er en brik på den plads
+    if (ret[diskPos.x, diskPos.y] != "-")
+    {
+      return ("Denne plads er allerede optaget af en anden brik");
+    }
+
+    
+    // vi sætter toBeMarked til at være alle de disks som skal vendes.
+    List<(int x, int y)> toBeMarked = new List<(int x, int y)>();
+    toBeMarked = turningDisks(board, diskPos, color);
+
+    // vi vender alle de disks som skal vendes. 
     foreach ((int x, int y) pos in toBeMarked)
     {
       ret[pos.x, pos.y] = color;
