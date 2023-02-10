@@ -1,5 +1,7 @@
 @page "/"
 <h1>(Ot)Hello</h1>
+<h1>X har @wins[0] sejre. O har @wins[1] sejre.</h1>
+<h2>X har @points[0] point. O har @points[1] point.</h2>
 
 <input type="text" @bind=@strCords[0]>
 <input type="text" @bind=@strCords[1]>
@@ -33,6 +35,8 @@
 
   }
 */
+
+  // brættet
   public string[,] bræt = {
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
@@ -44,12 +48,16 @@
     {"-", "-", "-", "-", "-", "-", "-", "-"}
   };
 
+  // den besked der bliver returned, hver gang der er lavet et træk
   public string errorMessage="";
 
+  // den input man får af brugeren.
   public string[]? strCords = new string[2];
 
+  // int versionen af koordinaterne
   public (int x, int y) intCords;
 
+  // hvis tur det er. Kan enten være 'x' eller 'o'
   public string turn = "x";
 
   // metode der bliver kaldt når spillet skal startes forfra 
@@ -93,6 +101,9 @@
       // sørger for alle ledige pladser bliver vist
       availableSpots(bræt, turn);
 
+      // opdaterer scoren
+      countPoints();
+
       // hvis man ikke kan gøre noget, får den anden person turen
       if (!canMove) {
         if (turn=="x")
@@ -104,10 +115,18 @@
         {
           turn = "x";
         }
+
         // vi prøver nu igen at vise hvilke nogen man kan klikke på
         availableSpots(bræt, turn);      
+
         // hvis den anden person heller ikke kan gøre noget, starter vi altså bare forfra
         if (!canMove){
+          // dem der har flest point vinder
+          if (points[0]<points[1]){
+            wins[1]++;
+          } else if (points[0]>points[1]){
+            wins[0]++;
+          } // else: draw
           startup();
         }
       }
@@ -115,6 +134,27 @@
 
 
     } 
+  }
+  
+  // point som hvert hold har. Hold
+  public int[] wins = {0,0};
+  public int[] points = {2, 2};
+
+  // metode der giver point til dem der har vundet.
+  public void countPoints(){
+    points[0] = 0;
+    points[1] = 0;
+
+    // for hver position i brættet ser vi om det er x eller o og tæller.
+    foreach(string position in bræt){
+      if (position == "x"){
+        points[0]++;
+      }
+      else if (position == "o"){
+        points[1]++;
+      }
+    }
+    return;
   }
 
 
