@@ -22,11 +22,7 @@
     }
     </tr>
   }
-
-
 </table>
-
-
 
 @code
 {
@@ -38,10 +34,10 @@
   public string[,] bræt = {
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "x", "o", "-", "-", "-"},
-    {"-", "-", "-", "o", "x", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "M", "-", "-", "-"},
+    {"-", "-", "-", "x", "o", "M", "-", "-"},
+    {"-", "-", "M", "o", "x", "-", "-", "-"},
+    {"-", "-", "-", "M", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"}
   };
@@ -60,6 +56,7 @@
     // opdater brættet 
     errorMessage = updateBoard(bræt, intCords, turn);
 
+    // hvis der ikke er nogen fejlbeskeder
     if (errorMessage == "") 
     {
       if (turn=="x")
@@ -70,7 +67,33 @@
       {
         turn = "x";
       }
+
+      // sørger for alle ledige pladser bliver vist
+      availableSpots(bræt, turn);
     } 
+  }
+
+  // metode, der bestemmer alle pladser, hvor man kan ligge sin brik. Den 'farver' også alle de steder, hvor man kan ligge sin brik.
+  public void availableSpots(string[,] board, string color) 
+  {
+    (int x, int y) pos;
+    // tjekker bare for alle pladser: hvis der bliver vendt en brik når man ligger der, er det et available spot.
+    for (int row=0; row<8; row++){
+      for (int column=0; column<8; column++){
+        pos.x = row;
+        pos.y = column;
+        // hvis man godt må ligge sin brik (evt. oveni)
+        if (turningDisks(board, pos, color).Count != 0) {
+          // hvis brikken endda også er tom
+          if (board[row, column] == "-" || board[row, column] == "M"){
+            board[row, column] = "M";
+          }
+        } else if (board[row, column] == "M") {
+          board[row, column] = "-";
+        }
+      }
+    }
+    return;
   }
 
   // deciding which disks to turn. Returns a list with the coordinates to the lists that should be turned.
@@ -122,7 +145,7 @@
         }
 
         // hvis sys tjekker en tom
-        else if (board[diskPos.x+j*dir1, diskPos.y+j*dir2] == "-") 
+        else if (board[diskPos.x+j*dir1, diskPos.y+j*dir2] == "-" || board[diskPos.x+j*dir1, diskPos.y+j*dir2] == "M") 
         {
           break;
         }
@@ -154,6 +177,8 @@
     // definerer brættet som udgangspunkt
     string[,] ret = board;
 
+    //// fejlbeskeder
+
     // hvis brikken ikke kan ligge på brættet. Denne skal være før den næste fejlbesked
     if (!(0<=diskPos.x && diskPos.x<=7 && 0<=diskPos.y && diskPos.y<=7))
     {
@@ -161,9 +186,13 @@
     }
 
     // hvis der allerede er en brik på den plads
-    if (ret[diskPos.x, diskPos.y] != "-")
+    if (ret[diskPos.x, diskPos.y] == "-")
     {
-      return ("Denne plads er allerede optaget af en anden brik");
+      return ("Du må ikke lægge din brik der. Der er nemlig ingen brikker der bliver vendt.");
+    }
+
+    if (ret[diskPos.x, diskPos.y] != "M"){
+      return ("Du må ikke ligge der, denne brik er allerede opgavet");
     }
 
     
@@ -177,19 +206,13 @@
       ret[pos.x, pos.y] = color;
     }
 
-    // hvis der ikke er nogle brikker der skal ændres, skal den give en fejlbesked
-    if (toBeMarked.Count==0)
-    {
-      return("Du må ikke lægge din brik der. Der er nemlig ingen brikker der bliver vendt.");
-    }
-
     // opdaterer brættet med det nye bræt
     ret[diskPos.x, diskPos.y]=color;
 
-    // returnerer det nye bræt
-
-
+    // returnerer
     return ("");
+
+
   }
 
 
