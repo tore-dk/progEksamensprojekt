@@ -1,5 +1,5 @@
-@page "/othello"
-<h1>Hello</h1>
+@page "/"
+<h1>(Ot)Hello</h1>
 
 <input type="text" @bind=@strCords[0]>
 <input type="text" @bind=@strCords[1]>
@@ -36,10 +36,10 @@
   public string[,] bræt = {
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "M", "-", "-", "-"},
-    {"-", "-", "-", "x", "o", "M", "-", "-"},
-    {"-", "-", "M", "o", "x", "-", "-", "-"},
     {"-", "-", "-", "M", "-", "-", "-", "-"},
+    {"-", "-", "M", "o", "x", "-", "-", "-"},
+    {"-", "-", "-", "x", "o", "M", "-", "-"},
+    {"-", "-", "-", "-", "M", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"}
   };
@@ -59,8 +59,8 @@
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "x", "o", "-", "-", "-"},
     {"-", "-", "-", "o", "x", "-", "-", "-"},
+    {"-", "-", "-", "x", "o", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"}
@@ -92,12 +92,40 @@
 
       // sørger for alle ledige pladser bliver vist
       availableSpots(bræt, turn);
+
+      // hvis man ikke kan gøre noget, får den anden person turen
+      if (!canMove) {
+        if (turn=="x")
+        {
+          turn = "o";
+        }
+
+        else 
+        {
+          turn = "x";
+        }
+        // vi prøver nu igen at vise hvilke nogen man kan klikke på
+        availableSpots(bræt, turn);      
+        // hvis den anden person heller ikke kan gøre noget, starter vi altså bare forfra
+        if (!canMove){
+          startup();
+        }
+      }
+
+
+
     } 
   }
 
+
+  public bool canMove = true;
   // metode, der bestemmer alle pladser, hvor man kan ligge sin brik. Den 'farver' også alle de steder, hvor man kan ligge sin brik.
   public void availableSpots(string[,] board, string color) 
   {
+    // som udgangspunkt er der ikke nogle mulige træk:
+    canMove = false;
+
+
     (int x, int y) pos;
     // tjekker bare for alle pladser: hvis der bliver vendt en brik når man ligger der, er det et available spot.
     for (int row=0; row<8; row++){
@@ -113,6 +141,9 @@
           // hvis brikken endda også er tom
           if (board[row, column] == "-" || board[row, column] == "M"){
             board[row, column] = "M";
+
+            // hvis der er (mindst et M) på brættet, kan man altså godt placere en brik
+            canMove = true;
           }
 
         // hvis man ikke kan ligge en brik, men brikken er markeret, skal vi lige fjerne markeringen
@@ -185,14 +216,7 @@
         }
 
       }
-
     }
-    foreach ((int x, int y) pos in toBeMarked)
-    {
-      Console.Write(pos.x);
-      Console.WriteLine(pos.y);
-    }
-
     return toBeMarked;
   }
 
