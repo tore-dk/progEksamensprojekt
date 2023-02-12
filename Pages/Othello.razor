@@ -6,7 +6,7 @@
 <input type="text" @bind=@strCords[0]>
 <input type="text" @bind=@strCords[1]>
 
-<button @onclick="load">Indsæt tal</button>
+<button @onclick="@(() => load(8-int.Parse(strCords[1]), int.Parse(strCords[0])-1))">Indsæt tal</button>
 <button @onclick="startup">Start spillet forfra</button>
 
 <br>
@@ -16,10 +16,12 @@
 <table class="table" style="width:200px; table-layout:fixed;">
   @for(int i=0; i<8; i++)
   {
+    int IValue = i;
     <tr>
     @for(int j=0; j<8; j++)
     {
-      <td style="heigh:200px;">
+      int JValue = j;
+      <td style="heigh:200px;" @onclick="(() => load(IValue, JValue) )">
         @bræt[i, j]
       </td>
 
@@ -79,9 +81,9 @@
   }
 
   // metode der bliver kaldt, hver gang der sker et træt
-  public void load()
+  public void load(int xCord, int yCord)
   {
-    intCords = (8-int.Parse(strCords[1]), int.Parse(strCords[0])-1);
+    intCords = (xCord, yCord);
 
     // opdater brættet 
     errorMessage = updateBoard(bræt, intCords, turn);
