@@ -11,7 +11,7 @@
 <h3>@errorMessage <br></h3>
 <h2>Det er @turn 's tur</h2>
 
-<table class="table" style="width:200px; table-layout:fixed; text-align:center;">
+<table cellspacing="0" cellpadding="0" class="table" style="width:400px; table-layout:fixed; text-align:center; margin:0; padding:0;">
   @for(int i=0; i<8; i++)
   {
     int IValue = i;
@@ -19,8 +19,8 @@
     @for(int j=0; j<8; j++)
     {
       int JValue = j;
-      <td style="heigh:200px; border:1px solid black; border-collapse:collapse;" @onclick="(() => load(IValue, JValue) )">
-        @bræt[i, j]
+      <td style="heigh:400px; margin:0; padding:0;" @onclick="(() => load(IValue, JValue) )">
+        <img src=@choosePicture(i,j) width="100%" style="display:block;">
       </td>
     }
     </tr>
@@ -172,6 +172,23 @@
     availableSpots(bræt, turn);
     points = new int[] {2,2};
     return;
+  }
+
+  public string choosePicture(int xCord, int yCord) 
+  {
+    if(bræt[xCord, yCord] == "-"){
+      return ("/pictures/green.png");
+    } else if(bræt[xCord, yCord] == "x") {
+      return ("/pictures/black.png");
+    } else if(bræt[xCord, yCord] == "X") {
+      return("/pictures/half_black.png");
+    } else if(bræt[xCord, yCord] == "o") {
+      return("/pictures/white.png");
+    } else if(bræt[xCord, yCord] == "O") {
+      return("/pictures/half_white.png"); 
+    } else {
+      return("/pictures/red.png");
+    }
   }
 
   // metode der bliver kaldt, hver gang der sker et træt
