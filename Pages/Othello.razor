@@ -1,5 +1,6 @@
 @page "/"
 
+
 <h1>(Ot)Hello</h1>
 <h1>X har @wins[0] sejre. O har @wins[1] sejre.</h1>
 <h2>X har @points[0] point. O har @points[1] point.</h2>
@@ -21,6 +22,67 @@
       <td style="heigh:200px; border:1px solid black; border-collapse:collapse;" @onclick="(() => load(IValue, JValue) )">
         @bræt[i, j]
       </td>
+    }
+    </tr>
+  }
+</table>
+
+<br>
+<br>
+<br>
+
+<p>det nyeste træk</p>
+<table class="table" style="width:200px; table-layout:fixed; text-align:center;">
+  @for(int i=0; i<8; i++)
+  {
+    int IValue = i;
+    <tr>
+    @for(int j=0; j<8; j++)
+    {
+      int JValue = j;
+      <td style="heigh:200px; border:1px solid black; border-collapse:collapse;">
+        @nysttræk[i, j]
+      </td>
+
+    }
+    </tr>
+  }
+</table>
+
+<br>
+
+<p>det andet nyeste træk</p>
+<table class="table" style="width:200px; table-layout:fixed; text-align:center;">
+  @for(int i=0; i<8; i++)
+  {
+    int IValue = i;
+    <tr>
+    @for(int j=0; j<8; j++)
+    {
+      int JValue = j;
+      <td style="heigh:200px; border:1px solid black; border-collapse:collapse;">
+        @andttræk[i, j]
+      </td>
+
+    }
+    </tr>
+  }
+</table>
+
+<br>
+
+<p>det tredje nyeste træk</p>
+<table class="table" style="width:200px; table-layout:fixed; text-align:center;">
+  @for(int i=0; i<8; i++)
+  {
+    int IValue = i;
+    <tr>
+    @for(int j=0; j<8; j++)
+    {
+      int JValue = j;
+      <td style="heigh:200px; border:1px solid black; border-collapse:collapse;">
+        @tredjtræk[i, j]
+      </td>
 
     }
     </tr>
@@ -39,10 +101,10 @@
   public string[,] bræt = {
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "M", "-", "-", "-", "-"},
-    {"-", "-", "M", "o", "x", "-", "-", "-"},
-    {"-", "-", "-", "x", "o", "M", "-", "-"},
-    {"-", "-", "-", "-", "M", "-", "-", "-"},
+    {"-", "-", "-", "X", "-", "-", "-", "-"},
+    {"-", "-", "X", "o", "x", "-", "-", "-"},
+    {"-", "-", "-", "x", "o", "X", "-", "-"},
+    {"-", "-", "-", "-", "X", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"}
   };
@@ -72,7 +134,41 @@
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"}
   };
-    turn = "x";
+
+  nysttræk = new string[8,8] {
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"}
+  };
+
+  andttræk = new string[8,8] {
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"}
+  };
+
+  tredjtræk = new string[8,8] {
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"}
+  };
+
+  turn = "x";
     availableSpots(bræt, turn);
     points = new int[] {2,2};
     return;
@@ -154,11 +250,29 @@
     return;
   }
 
+  public string possiblePos(string color) {
+    if(color=="x") {
+      return("X");
+    } else if(color=="o"){
+      return("O");
+    }
+    else {
+      return ("gg");
+    }
+  }
 
   public bool canMove = true;
   // metode, der bestemmer alle pladser, hvor man kan lægge sin brik. Den 'farver' også alle de steder, hvor man kan lægge sin brik.
   public void availableSpots(string[,] board, string color) 
   {
+    // workaround lol
+    string nColor = "";
+    if(color=="x"){
+      nColor = "o";
+    } else {
+      nColor = "x";
+    }
+
     // som udgangspunkt er der ikke nogle mulige træk:
     canMove = false;
 
@@ -172,19 +286,19 @@
         pos.x = row;
         pos.y = column;
 
-        // hvis man godt må ligge sin brik (evt. oveni)
+        // hvis der bliver vendt nogle brikker, når man ligger sin brik her.
         if (turningDisks(board, pos, color).Count != 0) {
 
           // hvis brikken endda også er tom
-          if (board[row, column] == "-" || board[row, column] == "M"){
-            board[row, column] = "M";
+          if (board[row, column] == "-" || board[row, column] == possiblePos(nColor)){
+            board[row, column] = possiblePos(color);
 
             // hvis der er (mindst et M) på brættet, kan man altså godt placere en brik
             canMove = true;
           }
 
         // hvis man ikke kan ligge en brik, men brikken er markeret, skal vi lige fjerne markeringen
-        } else if (board[row, column] == "M") {
+        } else if (board[row, column] == possiblePos(nColor)) {
           board[row, column] = "-";
         }
       }
@@ -197,6 +311,14 @@
   // som en liste af (x,y)-koordinater. 
   public List<(int x, int y)> turningDisks(string[,] board, (int x, int y) diskPos, string color)
   {
+    // workaround igen
+    string nColor = "";
+    if(color=="x"){
+      nColor = "o";
+    } else {
+      nColor = "x";
+    }
+
     // laver en liste som er den liste der skal returneres.
     List<(int x, int y)> ret = new List<(int x, int y)>();
 
@@ -243,7 +365,7 @@
         }
 
         // hvis systemet tjekker en tom
-        else if (board[diskPos.x+j*dir1, diskPos.y+j*dir2] == "-" || board[diskPos.x+j*dir1, diskPos.y+j*dir2] == "M") 
+        else if (board[diskPos.x+j*dir1, diskPos.y+j*dir2] == "-" || board[diskPos.x+j*dir1, diskPos.y+j*dir2] == possiblePos(nColor) || board[diskPos.x+j*dir1, diskPos.y+j*dir2] == possiblePos(color)) 
         {
           break;
         }
@@ -260,7 +382,7 @@
   }
 
   public (int x, int y) checkingCords;
-  // note. åbentbart når man vi ændrer på 'ret' ændrer vi direkte på 'board' og dermed 'bræt'
+  // note. åbentbart når vi ændrer på 'ret' ændrer vi direkte på 'board' og dermed 'bræt'
   // vi ændrer altså på selve listen fordi den refererer til stedet i hukkomelsen hvor listen ligger, frem for at lave en duplicate
   // derfor returnerer vi et tal (0) hvis programmet er succes, (1), hvis der ikke bliver ændret på nogle brikker.
   public string updateBoard(string[,] board, (int x, int y) diskPos, string color) //board er 8x8, og diskPos er (y,x). Y målt oppefra og ned
@@ -273,21 +395,24 @@
     // hvis brikken ikke kan ligge på brættet. Denne skal være før den næste fejlbesked
     if (!(0<=diskPos.x && diskPos.x<=7 && 0<=diskPos.y && diskPos.y<=7))
     {
-      return ("Der er valgt en brik der ligger uden for brættet.");
+      return ("Der er valgt en placering der ligger uden for brættet.");
     }
 
-    // hvis der allerede er en brik på den plads
-    if (ret[diskPos.x, diskPos.y] == "-")
+    // hvis det er et ugyldigt felt uden en brik
+    else if (ret[diskPos.x, diskPos.y] == "-")
     {
       return ("Du må ikke lægge din brik der. Der er nemlig ingen brikker der bliver vendt.");
     }
 
-    if (ret[diskPos.x, diskPos.y] != "M"){
-      return ("Du må ikke ligge der, denne brik er allerede optaget");
+    // hvis der allerede er en brik på den plads
+    else if (ret[diskPos.x, diskPos.y] != possiblePos(color)){
+      return ("Du må ikke lægge der, denne placering er allerede optaget");
     }
 
+    // opdater bræthistorikken 
+   //opdatny()
     
-    // vi sætter toBeMarked til at være alle de disks som skal vendes.
+    // vi sætter toBeMarked til at være alle de brikker som skal vendes.
     List<(int x, int y)> toBeMarked = new List<(int x, int y)>();
     toBeMarked = turningDisks(board, diskPos, color);
 
@@ -302,9 +427,54 @@
 
     // returnerer
     return ("");
-
-
   }
+
+  //historik for de sidste tre træk:
+public string[,] nysttræk = {
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"}
+};
+
+public string[,] andttræk = {
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"}
+};
+
+public string[,] tredjtræk = {
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"},
+    {"-", "-", "-", "-", "-", "-", "-", "-"}
+};
+
+//metoder til at opdatere historik
+
+ public void opdatny(int x, int y)
+    {
+        for (int i = 0; i >= 8; i++)
+        {
+            for (int j = 0; j <= 8; j++)
+            {
+                nysttræk[i,j] = bræt[i,j];
+            }
+        }
+    }
 
 
 }

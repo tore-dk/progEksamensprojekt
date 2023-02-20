@@ -87,43 +87,6 @@
         }
       },
       {
-        "HashCode": -280454296,
-        "Kind": "Components.Component",
-        "Name": "ethelloTest_updateBoard.Pages.Index",
-        "AssemblyName": "ethelloTest_updateBoard",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Index"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "ethelloTest_updateBoard.Pages.Index",
-          "Common.TypeNamespace": "ethelloTest_updateBoard.Pages",
-          "Common.TypeNameIdentifier": "Index"
-        }
-      },
-      {
-        "HashCode": 1744145999,
-        "Kind": "Components.Component",
-        "Name": "ethelloTest_updateBoard.Pages.Index",
-        "AssemblyName": "ethelloTest_updateBoard",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "ethelloTest_updateBoard.Pages.Index"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "ethelloTest_updateBoard.Pages.Index",
-          "Common.TypeNamespace": "ethelloTest_updateBoard.Pages",
-          "Common.TypeNameIdentifier": "Index",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
         "HashCode": -1906784511,
         "Kind": "Components.Component",
         "Name": "ethelloTest_updateBoard.Pages.Othello",
@@ -157,6 +120,43 @@
           "Common.TypeName": "ethelloTest_updateBoard.Pages.Othello",
           "Common.TypeNamespace": "ethelloTest_updateBoard.Pages",
           "Common.TypeNameIdentifier": "Othello",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "HashCode": -280454296,
+        "Kind": "Components.Component",
+        "Name": "ethelloTest_updateBoard.Pages.Index",
+        "AssemblyName": "ethelloTest_updateBoard",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Index"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "ethelloTest_updateBoard.Pages.Index",
+          "Common.TypeNamespace": "ethelloTest_updateBoard.Pages",
+          "Common.TypeNameIdentifier": "Index"
+        }
+      },
+      {
+        "HashCode": 1744145999,
+        "Kind": "Components.Component",
+        "Name": "ethelloTest_updateBoard.Pages.Index",
+        "AssemblyName": "ethelloTest_updateBoard",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "ethelloTest_updateBoard.Pages.Index"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "ethelloTest_updateBoard.Pages.Index",
+          "Common.TypeNamespace": "ethelloTest_updateBoard.Pages",
+          "Common.TypeNameIdentifier": "Index",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
