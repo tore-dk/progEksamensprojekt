@@ -1,19 +1,16 @@
 @page "/"
+
 <h1>(Ot)Hello</h1>
 <h1>X har @wins[0] sejre. O har @wins[1] sejre.</h1>
 <h2>X har @points[0] point. O har @points[1] point.</h2>
 
-<input type="text" @bind=@strCords[0]>
-<input type="text" @bind=@strCords[1]>
-
-<button @onclick="@(() => load(8-int.Parse(strCords[1]), int.Parse(strCords[0])-1))">Indsæt tal</button>
 <button @onclick="startup">Start spillet forfra</button>
 
 <br>
 <h3>@errorMessage <br></h3>
 <h2>Det er @turn 's tur</h2>
 
-<table class="table" style="width:200px; table-layout:fixed;">
+<table class="table" style="width:200px; table-layout:fixed; text-align:center;">
   @for(int i=0; i<8; i++)
   {
     int IValue = i;
@@ -21,7 +18,7 @@
     @for(int j=0; j<8; j++)
     {
       int JValue = j;
-      <td style="heigh:200px;" @onclick="(() => load(IValue, JValue) )">
+      <td style="heigh:200px; border:1px solid black; border-collapse:collapse;" @onclick="(() => load(IValue, JValue) )">
         @bræt[i, j]
       </td>
 
@@ -56,7 +53,7 @@
   // den input man får af brugeren.
   public string[]? strCords = new string[2];
 
-  // int versionen af koordinaterne
+  // int versionen af koordinaterne (kaldes en tuple)
   public (int x, int y) intCords;
 
   // hvis tur det er. Kan enten være 'x' eller 'o'
@@ -77,6 +74,7 @@
   };
     turn = "x";
     availableSpots(bræt, turn);
+    points = new int[] {2,2};
     return;
   }
 
@@ -132,13 +130,10 @@
           startup();
         }
       }
-
-
-
     } 
   }
   
-  // point som hvert hold har. Hold
+  // point som hver spiller har. Hold
   public int[] wins = {0,0};
   public int[] points = {2, 2};
 
@@ -161,7 +156,7 @@
 
 
   public bool canMove = true;
-  // metode, der bestemmer alle pladser, hvor man kan ligge sin brik. Den 'farver' også alle de steder, hvor man kan ligge sin brik.
+  // metode, der bestemmer alle pladser, hvor man kan lægge sin brik. Den 'farver' også alle de steder, hvor man kan lægge sin brik.
   public void availableSpots(string[,] board, string color) 
   {
     // som udgangspunkt er der ikke nogle mulige træk:
@@ -169,7 +164,7 @@
 
 
     (int x, int y) pos;
-    // tjekker bare for alle pladser: hvis der bliver vendt en brik når man ligger der, er det et available spot.
+    // tjekker bare for alle pladser: hvis der bliver vendt en brik når man lægger der, er det en mulig placering.
     for (int row=0; row<8; row++){
 
       for (int column=0; column<8; column++){
@@ -197,7 +192,9 @@
     return;
   }
 
-  // deciding which disks to turn. Returns a list with the coordinates to the lists that should be turned.
+  // funktionen får givet (x,y) koordinater til den brik der bliver lagt samt farven af den brik.
+  // Den bestemmer derefter hvilke brikker der skal vendes og returnerer koordinaterne af disse brikker
+  // som en liste af (x,y)-koordinater. 
   public List<(int x, int y)> turningDisks(string[,] board, (int x, int y) diskPos, string color)
   {
     // laver en liste som er den liste der skal returneres.
@@ -245,13 +242,13 @@
           break;
         }
 
-        // hvis sys tjekker en tom
+        // hvis systemet tjekker en tom
         else if (board[diskPos.x+j*dir1, diskPos.y+j*dir2] == "-" || board[diskPos.x+j*dir1, diskPos.y+j*dir2] == "M") 
         {
           break;
         }
 
-        // hvis det er modstanders brik
+        // hvis det er modstanderens brik
         else 
         {
           tempToBeMarked.Add((diskPos.x+j*dir1, diskPos.y+j*dir2));
@@ -286,7 +283,7 @@
     }
 
     if (ret[diskPos.x, diskPos.y] != "M"){
-      return ("Du må ikke ligge der, denne brik er allerede opgavet");
+      return ("Du må ikke ligge der, denne brik er allerede optaget");
     }
 
     
