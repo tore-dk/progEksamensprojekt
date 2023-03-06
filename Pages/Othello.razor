@@ -19,8 +19,8 @@
     @for(int j=0; j<8; j++)
     {
       int JValue = j;
-      <td style="heigh:400px; margin:0; padding:0;" @onclick="(() => load(IValue, JValue) )">
-        <img src=@choosePicture(i,j) width="100%" style="display:block; padding:0;">
+      <td style="heigh:400px; margin:0; padding:0;" @onclick="(() => load(IValue, JValue, bræt) )">
+        <img src=@choosePicture(i,j, bræt) width="100%" style="display:block; padding:0;">
       </td>
     }
     </tr>
@@ -32,7 +32,7 @@
 <br>
 
 <p>det nyeste træk</p>
-<table class="table" style="width:200px; table-layout:fixed; text-align:center;">
+<table cellspacing="0" cellpadding="0" class="table" style="width:400px; table-layout:fixed; text-align:center; margin:0; padding:0;">
   @for(int i=0; i<8; i++)
   {
     int IValue = i;
@@ -40,10 +40,9 @@
     @for(int j=0; j<8; j++)
     {
       int JValue = j;
-      <td style="heigh:200px; border:1px solid black; border-collapse:collapse;">
-        @nysttræk[i, j]
+      <td style="heigh:400px; margin:0; padding:0;" @onclick="(() => load(IValue, JValue, bræt) )">
+        <img src=@choosePicture(i,j, ntræk) width="100%" style="display:block; padding:0;">
       </td>
-
     }
     </tr>
   }
@@ -52,7 +51,7 @@
 <br>
 
 <p>det andet nyeste træk</p>
-<table class="table" style="width:200px; table-layout:fixed; text-align:center;">
+<table cellspacing="0" cellpadding="0" class="table" style="width:400px; table-layout:fixed; text-align:center; margin:0; padding:0;">
   @for(int i=0; i<8; i++)
   {
     int IValue = i;
@@ -60,10 +59,9 @@
     @for(int j=0; j<8; j++)
     {
       int JValue = j;
-      <td style="heigh:200px; border:1px solid black; border-collapse:collapse;">
-        @andttræk[i, j]
+      <td style="heigh:400px; margin:0; padding:0;" @onclick="(() => load(IValue, JValue, bræt) )">
+        <img src=@choosePicture(i,j, atræk) width="100%" style="display:block; padding:0;">
       </td>
-
     }
     </tr>
   }
@@ -71,7 +69,7 @@
 
 <br>
 <p>det tredje nyeste træk</p>
-<table class="table" style="width:200px; table-layout:fixed; text-align:center;">
+<table cellspacing="0" cellpadding="0" class="table" style="width:400px; table-layout:fixed; text-align:center; margin:0; padding:0;">
   @for(int i=0; i<8; i++)
   {
     int IValue = i;
@@ -79,10 +77,9 @@
     @for(int j=0; j<8; j++)
     {
       int JValue = j;
-      <td style="heigh:200px; border:1px solid black; border-collapse:collapse;">
-        @tredjtræk[i, j]
+      <td style="heigh:400px; margin:0; padding:0;" @onclick="(() => load(IValue, JValue, bræt) )">
+        <img src=@choosePicture(i,j, ttræk) width="100%" style="display:block; padding:0;">
       </td>
-
     }
     </tr>
   }
@@ -124,79 +121,82 @@
   public void startup()
   {
     bræt = new string[8,8] {
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "o", "x", "-", "-", "-"},
-    {"-", "-", "-", "x", "o", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"}
-  };
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "o", "x", "-", "-", "-"},
+      {"-", "-", "-", "x", "o", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"}
+    };
 
-  nysttræk = new string[8,8] {
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"}
-  };
+    ntræk = new string[8,8] {
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"}
+    };
 
-  andttræk = new string[8,8] {
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"}
-  };
+    atræk = new string[8,8] {
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"}
+    };
 
-  tredjtræk = new string[8,8] {
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"},
-    {"-", "-", "-", "-", "-", "-", "-", "-"}
-  };
+    ttræk = new string[8,8] {
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"},
+      {"-", "-", "-", "-", "-", "-", "-", "-"}
+    };
 
-  turn = "x";
+    turn = "x";
     availableSpots(bræt, turn);
     points = new int[] {2,2};
     return;
   }
 
-  public string choosePicture(int xCord, int yCord) 
+  // metode der får givet x-y position og et det board det sker på. Den returnerer bare 
+  // det billede som svarer til det symbol der var ellers
+  // f: symbol -> billede
+  public string choosePicture(int xCord, int yCord, string[,] board) 
   {
-    if(bræt[xCord, yCord] == "-"){
+    if(board[xCord, yCord] == "-"){
       return ("/pictures/green.png");
-    } else if(bræt[xCord, yCord] == "x") {
+    } else if(board[xCord, yCord] == "x") {
       return ("/pictures/black.png");
-    } else if(bræt[xCord, yCord] == "X") {
+    } else if(board[xCord, yCord] == "X") {
       return("/pictures/half_black.png");
-    } else if(bræt[xCord, yCord] == "o") {
+    } else if(board[xCord, yCord] == "o") {
       return("/pictures/white.png");
-    } else if(bræt[xCord, yCord] == "O") {
+    } else if(board[xCord, yCord] == "O") {
       return("/pictures/half_white.png"); 
     } else {
       return("/pictures/red.png");
     }
   }
 
-  // metode der bliver kaldt, hver gang der sker et træt
-  public void load(int xCord, int yCord)
+  // metode der bliver kaldt, hver gang der sker et træk
+  public void load(int xCord, int yCord, string[,] board)
   {
     intCords = (xCord, yCord);
 
     // opdater brættet 
-    errorMessage = updateBoard(bræt, intCords, turn);
+    errorMessage = updateBoard(board, intCords, turn);
 
     // hvis der ikke er nogen fejlbeskeder
     if (errorMessage == "") 
@@ -211,7 +211,7 @@
       }
 
       // sørger for alle ledige pladser bliver vist
-      availableSpots(bræt, turn);
+      availableSpots(board, turn);
 
       // opdaterer scoren
       countPoints();
@@ -229,7 +229,7 @@
         }
 
         // vi prøver nu igen at vise hvilke nogen man kan klikke på
-        availableSpots(bræt, turn);      
+        availableSpots(board, turn);      
 
         // hvis den anden person heller ikke kan gøre noget, starter vi altså bare forfra
         if (!canMove){
@@ -426,7 +426,9 @@
     }
 
     // opdater bræthistorikken 
-   //opdatny()
+       opdateTidligereTræk(ttræk,atræk);
+        opdateTidligereTræk(atræk, ntræk);
+        opdateTidligereTræk(ntræk, board);
     
     // vi sætter toBeMarked til at være alle de brikker som skal vendes.
     List<(int x, int y)> toBeMarked = new List<(int x, int y)>();
@@ -446,7 +448,7 @@
   }
 
   //historik for de sidste tre træk:
-public string[,] nysttræk = {
+public string[,] ntræk = {
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
@@ -457,7 +459,7 @@ public string[,] nysttræk = {
     {"-", "-", "-", "-", "-", "-", "-", "-"}
 };
 
-public string[,] andttræk = {
+public string[,] atræk = {
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
@@ -468,7 +470,7 @@ public string[,] andttræk = {
     {"-", "-", "-", "-", "-", "-", "-", "-"}
 };
 
-public string[,] tredjtræk = {
+public string[,] ttræk = {
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
@@ -481,13 +483,13 @@ public string[,] tredjtræk = {
 
 //metoder til at opdatere historik
 
- public void opdatny(int x, int y)
+public void opdateTidligereTræk(string [,] recieverBoard, string [,] senderBoard)
     {
-        for (int i = 0; i >= 8; i++)
+        for (int i = 0; i < 8; i++)
         {
-            for (int j = 0; j <= 8; j++)
+            for (int j = 0; j < 8; j++)
             {
-                nysttræk[i,j] = bræt[i,j];
+                recieverBoard[i, j] = senderBoard[i, j];
             }
         }
     }
