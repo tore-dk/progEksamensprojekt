@@ -583,7 +583,7 @@
     // nu finder vi det træk, der giver AI flest point, og gemmer det i en variable, maxPointsAndCords
     foreach ((int x, int y) move in possibleMoves) {
       points = 0;
-      foreach ((int x, int y) turnedDisk in turningDisks(board, pos, color)) {
+      foreach ((int x, int y) turnedDisk in turningDisks(board, move, color)) {
         points += 2*boardWeight[turnedDisk.x, turnedDisk.y];
       }
       points += boardWeight[move.x, move.y];
@@ -602,20 +602,6 @@
 
     Console.Write(maxPointsAndCords.x);
     Console.WriteLine(maxPointsAndCords.y);
-
-       
-    //Console.Write(board[maxPointsAndCords.x, maxPointsAndCords.y]);
-
-    Console.WriteLine();
-
-    for(int i=0; i<8; i++){
-      for(int j=0;j<8;j++){
-        Console.Write(board[i, j]);
-      }
-      Console.WriteLine();
-    }
-
-    Console.WriteLine();
 
     return (maxPointsAndCords.x, maxPointsAndCords.y);
   }
