@@ -537,27 +537,8 @@
     
     List<(int x, int y)> possibleMoves = new List<(int x, int y)>();
 
-    /*
-    // gennemgår alle positioner på brættet
-    (int X, int Y) pos = (0,0);
-    for (int row=0; row<8; row++){
 
-      for (int column=0; column<8; column++){
-
-        pos.X = row;
-        pos.Y = column;
-
-        // hvis der bliver vendt nogle brikker, når man ligger sin brik her.
-        if (turningDisks(board, pos, color).Count != 0) {
-
-          // hvis brikken endda også er tom
-          if (board[row, column] == "-" || board[row, column] == possiblePos(nColor)){
-            possibleMoves.Add(pos);
-          }
-        }
-      }
-    }
-    */
+    // vi gennemgår alle de mulige træk (de er jo markeret med "O" eller "X"), og adder dem til en liste
     (int X, int Y) pos = (0,0);
     for (int row=0; row<8; row++){
 
@@ -577,10 +558,10 @@
 
     (int point, int x, int y) maxPointsAndCords = (-1000, 99, 88);
 
-    // vi har nu en liste possibleMoves som er alle mulige træk for AI
-
 
     // nu finder vi det træk, der giver AI flest point, og gemmer det i en variable, maxPointsAndCords
+    // for hvert træk gennemgår vi hvor mange point man får. Den gemmer også det træk, der giver flest point. 
+    // den gemmer også koordinaterne for det træk. 
     foreach ((int x, int y) move in possibleMoves) {
       points = 0;
       foreach ((int x, int y) turnedDisk in turningDisks(board, move, color)) {
@@ -603,6 +584,7 @@
     Console.Write(maxPointsAndCords.x);
     Console.WriteLine(maxPointsAndCords.y);
 
+    // metoden returnerer koordinaterne til det træk, der giver flest point.
     return (maxPointsAndCords.x, maxPointsAndCords.y);
   }
 
