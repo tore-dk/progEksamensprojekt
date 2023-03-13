@@ -204,14 +204,18 @@
       if (turn=="x")
       {
         turn = "o";
+        availableSpots(board, turn);
+        (int x, int y) theMove = AImove(board, "o");
+        load(theMove.x, theMove.y, board);  
       }
       else 
       {
         turn = "x";
+        availableSpots(board, turn);
       }
 
       // sørger for alle ledige pladser bliver vist
-      availableSpots(board, turn);
+      // availableSpots(board, turn);
 
       // opdaterer scoren
       countPoints();
@@ -221,6 +225,10 @@
         if (turn=="x")
         {
           turn = "o";
+          availableSpots(board, turn);
+          (int x, int y) theMove = AImove(board, "o");
+          Console.WriteLine("SADÆLKFAJSFDJASKFDLÆJAKSDJKLÆFSDKJADSFJKLÆSDJ");
+          load(theMove.x, theMove.y, board); 
         }
 
         else 
@@ -408,6 +416,11 @@
 
     //// fejlbeskeder
 
+    // hvis ai ikke kan lave et move
+    if (diskPos.x == 99 || diskPos.x == 88){
+      return ("AI kan ikke lave et move. Det er din tur igen");
+    }
+
     // hvis brikken ikke kan ligge på brættet. Denne skal være før den næste fejlbesked
     if (!(0<=diskPos.x && diskPos.x<=7 && 0<=diskPos.y && diskPos.y<=7))
     {
@@ -426,7 +439,7 @@
     }
 
     // opdater bræthistorikken 
-       opdateTidligereTræk(ttræk,atræk);
+        opdateTidligereTræk(ttræk,atræk);
         opdateTidligereTræk(atræk, ntræk);
         opdateTidligereTræk(ntræk, board);
     
@@ -448,7 +461,7 @@
   }
 
   //historik for de sidste tre træk:
-public string[,] ntræk = {
+  public string[,] ntræk = {
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
@@ -457,9 +470,9 @@ public string[,] ntræk = {
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"}
-};
+  };
 
-public string[,] atræk = {
+  public string[,] atræk = {
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
@@ -468,9 +481,9 @@ public string[,] atræk = {
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"}
-};
+  };
 
-public string[,] ttræk = {
+  public string[,] ttræk = {
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
@@ -479,20 +492,133 @@ public string[,] ttræk = {
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"},
     {"-", "-", "-", "-", "-", "-", "-", "-"}
-};
+  };
 
-//metoder til at opdatere historik
+  //metoder til at opdatere historik
 
-public void opdateTidligereTræk(string [,] recieverBoard, string [,] senderBoard)
+  public void opdateTidligereTræk(string [,] recieverBoard, string [,] senderBoard)
     {
-        for (int i = 0; i < 8; i++)
+      for (int i = 0; i < 8; i++)
+      {
+        for (int j = 0; j < 8; j++)
         {
-            for (int j = 0; j < 8; j++)
-            {
-                recieverBoard[i, j] = senderBoard[i, j];
-            }
+          recieverBoard[i, j] = senderBoard[i, j];
         }
+      }
     }
+
+
+
+  // AI TIME
+
+  // brættets vægtinger (lidt selv fundet på, men tager udgangspunkt i kloge folk)
+  public int[,] boardWeight =  new int[8,8] {
+    { 100, -10, 10, 6, 6, 10, -10, 100},
+    { -10, -20,  1, 2, 2,  1, -20, -10}, 
+    {  10,   1,  5, 4, 4,  5,   1,  10},
+    {   6,   2,  4, 2, 2,  4,   2,   6},
+    {   6,   2,  4, 2, 2,  4,   2,   6},
+    {  10,   1,  5, 4, 4,  5,   1,  10},
+    { -10, -20,  1, 2, 2,  1, -20, -10}, 
+    { 100, -10, 10, 6, 6, 10, -10, 100}
+  };
+
+  public (int x, int y) AImove(string [,] board, string color) {
+    List<int> pointsList = new List<int>();
+
+
+    // definerer lige nColor til at være den modsatte farve
+    string nColor = "";
+    if(color=="x"){
+      nColor = "o";
+    } else {
+      nColor = "x";
+    }
+    
+    List<(int x, int y)> possibleMoves = new List<(int x, int y)>();
+
+    /*
+    // gennemgår alle positioner på brættet
+    (int X, int Y) pos = (0,0);
+    for (int row=0; row<8; row++){
+
+      for (int column=0; column<8; column++){
+
+        pos.X = row;
+        pos.Y = column;
+
+        // hvis der bliver vendt nogle brikker, når man ligger sin brik her.
+        if (turningDisks(board, pos, color).Count != 0) {
+
+          // hvis brikken endda også er tom
+          if (board[row, column] == "-" || board[row, column] == possiblePos(nColor)){
+            possibleMoves.Add(pos);
+          }
+        }
+      }
+    }
+    */
+    (int X, int Y) pos = (0,0);
+    for (int row=0; row<8; row++){
+
+      for (int column=0; column<8; column++){
+
+        pos.X = row;
+        pos.Y = column;
+        if(board[row, column] == "O" || board[row, column] == "X"){
+          possibleMoves.Add((row, column));
+        }
+      }
+    }
+
+
+
+    int points = 0;
+
+    (int point, int x, int y) maxPointsAndCords = (-1000, 99, 88);
+
+    // vi har nu en liste possibleMoves som er alle mulige træk for AI
+
+
+    // nu finder vi det træk, der giver AI flest point, og gemmer det i en variable, maxPointsAndCords
+    foreach ((int x, int y) move in possibleMoves) {
+      points = 0;
+      foreach ((int x, int y) turnedDisk in turningDisks(board, pos, color)) {
+        points += 2*boardWeight[turnedDisk.x, turnedDisk.y];
+      }
+      points += boardWeight[move.x, move.y];
+
+      Console.Write("gg");
+      Console.Write(points);
+      Console.Write(move.x);
+      Console.WriteLine(move.y);
+
+      if(points>=maxPointsAndCords.point) {
+        maxPointsAndCords = (points, move.x, move.y);
+      }
+    }
+     
+    Console.WriteLine("-----");
+
+    Console.Write(maxPointsAndCords.x);
+    Console.WriteLine(maxPointsAndCords.y);
+
+       
+    //Console.Write(board[maxPointsAndCords.x, maxPointsAndCords.y]);
+
+    Console.WriteLine();
+
+    for(int i=0; i<8; i++){
+      for(int j=0;j<8;j++){
+        Console.Write(board[i, j]);
+      }
+      Console.WriteLine();
+    }
+
+    Console.WriteLine();
+
+    return (maxPointsAndCords.x, maxPointsAndCords.y);
+  }
 
 
 }
