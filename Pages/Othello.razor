@@ -7,23 +7,31 @@
 
 <button @onclick="startup">Start spillet forfra</button>
 
+<div class="dropdown">
+  <button class="dropbtn"> Dropdown</button>
+  <div class="="dropdown-content">
+    <a href="#"></a> 
+  </div>
+</div>
+
+
 <br>
 <h3>@errorMessage <br></h3>
 <h2>Det er @turn 's tur</h2>
 
 <table cellspacing="0" cellpadding="0" class="table" style="width:400px; table-layout:fixed; text-align:center; margin:0; padding:0;">
-  @for(int i=0; i<8; i++)
+  @for (int i = 0; i < 8; i++)
   {
     int IValue = i;
-    <tr>
-    @for(int j=0; j<8; j++)
-    {
-      int JValue = j;
-      <td style="heigh:400px; margin:0; padding:0;" @onclick="(() => load(IValue, JValue, bræt) )">
-        <img src=@choosePicture(i,j, bræt) width="100%" style="display:block; padding:0;">
-      </td>
-    }
-    </tr>
+        <tr>
+      @for (int j = 0; j < 8; j++)
+      {
+        int JValue = j;
+              <td style="heigh:400px; margin:0; padding:0;" @onclick="(() => load(IValue, JValue, bræt) )">
+                <img src=@choosePicture(i,j, bræt) width="100%" style="display:block; padding:0;">
+              </td>
+      }
+        </tr>
   }
 </table>
 
@@ -33,18 +41,18 @@
 
 <p>det nyeste træk</p>
 <table cellspacing="0" cellpadding="0" class="table" style="width:400px; table-layout:fixed; text-align:center; margin:0; padding:0;">
-  @for(int i=0; i<8; i++)
+  @for (int i = 0; i < 8; i++)
   {
     int IValue = i;
-    <tr>
-    @for(int j=0; j<8; j++)
-    {
-      int JValue = j;
-      <td style="heigh:400px; margin:0; padding:0;" @onclick="(() => load(IValue, JValue, bræt) )">
-        <img src=@choosePicture(i,j, ntræk) width="100%" style="display:block; padding:0;">
-      </td>
-    }
-    </tr>
+        <tr>
+      @for (int j = 0; j < 8; j++)
+      {
+        int JValue = j;
+              <td style="heigh:400px; margin:0; padding:0;" @onclick="(() => load(IValue, JValue, bræt) )">
+                <img src=@choosePicture(i,j, ntræk) width="100%" style="display:block; padding:0;">
+              </td>
+      }
+        </tr>
   }
 </table>
 
@@ -52,46 +60,46 @@
 
 <p>det andet nyeste træk</p>
 <table cellspacing="0" cellpadding="0" class="table" style="width:400px; table-layout:fixed; text-align:center; margin:0; padding:0;">
-  @for(int i=0; i<8; i++)
+  @for (int i = 0; i < 8; i++)
   {
     int IValue = i;
-    <tr>
-    @for(int j=0; j<8; j++)
-    {
-      int JValue = j;
-      <td style="heigh:400px; margin:0; padding:0;" @onclick="(() => load(IValue, JValue, bræt) )">
-        <img src=@choosePicture(i,j, atræk) width="100%" style="display:block; padding:0;">
-      </td>
-    }
-    </tr>
+        <tr>
+      @for (int j = 0; j < 8; j++)
+      {
+        int JValue = j;
+              <td style="heigh:400px; margin:0; padding:0;" @onclick="(() => load(IValue, JValue, bræt) )">
+                <img src=@choosePicture(i,j, atræk) width="100%" style="display:block; padding:0;">
+              </td>
+      }
+        </tr>
   }
 </table>
 
 <br>
 <p>det tredje nyeste træk</p>
 <table cellspacing="0" cellpadding="0" class="table" style="width:400px; table-layout:fixed; text-align:center; margin:0; padding:0;">
-  @for(int i=0; i<8; i++)
+  @for (int i = 0; i < 8; i++)
   {
     int IValue = i;
-    <tr>
-    @for(int j=0; j<8; j++)
-    {
-      int JValue = j;
-      <td style="heigh:400px; margin:0; padding:0;" @onclick="(() => load(IValue, JValue, bræt) )">
-        <img src=@choosePicture(i,j, ttræk) width="100%" style="display:block; padding:0;">
-      </td>
-    }
-    </tr>
+        <tr>
+      @for (int j = 0; j < 8; j++)
+      {
+        int JValue = j;
+              <td style="heigh:400px; margin:0; padding:0;" @onclick="(() => load(IValue, JValue, bræt) )">
+                <img src=@choosePicture(i,j, ttræk) width="100%" style="display:block; padding:0;">
+              </td>
+      }
+        </tr>
   }
 </table>
 
 @code
 {
-/*  protected override async Task OnInitializedAsync()
-  {
+  /*  protected override async Task OnInitializedAsync()
+    {
 
-  }
-*/
+    }
+  */
 
   // brættet
   public string[,] bræt = {
@@ -106,7 +114,7 @@
   };
 
   // den besked der bliver returned, hver gang der er lavet et træk
-  public string errorMessage="";
+  public string errorMessage = "";
 
   // den input man får af brugeren.
   public string[]? strCords = new string[2];
@@ -120,7 +128,7 @@
   // metode der bliver kaldt når spillet skal startes forfra 
   public void startup()
   {
-    bræt = new string[8,8] {
+    bræt = new string[8, 8] {
       {"-", "-", "-", "-", "-", "-", "-", "-"},
       {"-", "-", "-", "-", "-", "-", "-", "-"},
       {"-", "-", "-", "-", "-", "-", "-", "-"},
@@ -129,9 +137,9 @@
       {"-", "-", "-", "-", "-", "-", "-", "-"},
       {"-", "-", "-", "-", "-", "-", "-", "-"},
       {"-", "-", "-", "-", "-", "-", "-", "-"}
-    };
+  };
 
-    ntræk = new string[8,8] {
+    ntræk = new string[8, 8] {
       {"-", "-", "-", "-", "-", "-", "-", "-"},
       {"-", "-", "-", "-", "-", "-", "-", "-"},
       {"-", "-", "-", "-", "-", "-", "-", "-"},
@@ -140,9 +148,9 @@
       {"-", "-", "-", "-", "-", "-", "-", "-"},
       {"-", "-", "-", "-", "-", "-", "-", "-"},
       {"-", "-", "-", "-", "-", "-", "-", "-"}
-    };
+  };
 
-    atræk = new string[8,8] {
+    atræk = new string[8, 8] {
       {"-", "-", "-", "-", "-", "-", "-", "-"},
       {"-", "-", "-", "-", "-", "-", "-", "-"},
       {"-", "-", "-", "-", "-", "-", "-", "-"},
@@ -151,9 +159,9 @@
       {"-", "-", "-", "-", "-", "-", "-", "-"},
       {"-", "-", "-", "-", "-", "-", "-", "-"},
       {"-", "-", "-", "-", "-", "-", "-", "-"}
-    };
+  };
 
-    ttræk = new string[8,8] {
+    ttræk = new string[8, 8] {
       {"-", "-", "-", "-", "-", "-", "-", "-"},
       {"-", "-", "-", "-", "-", "-", "-", "-"},
       {"-", "-", "-", "-", "-", "-", "-", "-"},
@@ -162,31 +170,42 @@
       {"-", "-", "-", "-", "-", "-", "-", "-"},
       {"-", "-", "-", "-", "-", "-", "-", "-"},
       {"-", "-", "-", "-", "-", "-", "-", "-"}
-    };
+  };
 
     turn = "x";
     availableSpots(bræt, turn);
-    points = new int[] {2,2};
+    points = new int[] { 2, 2 };
     return;
   }
 
   // metode der får givet x-y position og et det board det sker på. Den returnerer bare 
   // det billede som svarer til det symbol der var ellers
   // f: symbol -> billede
-  public string choosePicture(int xCord, int yCord, string[,] board) 
+  public string choosePicture(int xCord, int yCord, string[,] board)
   {
-    if(board[xCord, yCord] == "-"){
+    if (board[xCord, yCord] == "-")
+    {
       return ("/pictures/green.png");
-    } else if(board[xCord, yCord] == "x") {
+    }
+    else if (board[xCord, yCord] == "x")
+    {
       return ("/pictures/black.png");
-    } else if(board[xCord, yCord] == "X") {
-      return("/pictures/half_black.png");
-    } else if(board[xCord, yCord] == "o") {
-      return("/pictures/white.png");
-    } else if(board[xCord, yCord] == "O") {
-      return("/pictures/half_white.png"); 
-    } else {
-      return("/pictures/red.png");
+    }
+    else if (board[xCord, yCord] == "X")
+    {
+      return ("/pictures/half_black.png");
+    }
+    else if (board[xCord, yCord] == "o")
+    {
+      return ("/pictures/white.png");
+    }
+    else if (board[xCord, yCord] == "O")
+    {
+      return ("/pictures/half_white.png");
+    }
+    else
+    {
+      return ("/pictures/red.png");
     }
   }
 
@@ -199,16 +218,17 @@
     errorMessage = updateBoard(board, intCords, turn);
 
     // hvis der ikke er nogen fejlbeskeder
-    if (errorMessage == "") 
+    if (errorMessage == "")
     {
-      if (turn=="x")
+      if (turn == "x")
       {
+
         turn = "o";
         availableSpots(board, turn);
         (int x, int y) theMove = AImove(board, "o");
-        load(theMove.x, theMove.y, board);  
+        load(theMove.x, theMove.y, board);
       }
-      else 
+      else
       {
         turn = "x";
         availableSpots(board, turn);
@@ -221,79 +241,96 @@
       countPoints();
 
       // hvis man ikke kan gøre noget, får den anden person turen
-      if (!canMove) {
-        if (turn=="x")
+      if (!canMove)
+      {
+        if (turn == "x")
         {
           turn = "o";
           availableSpots(board, turn);
           (int x, int y) theMove = AImove(board, "o");
           Console.WriteLine("SADÆLKFAJSFDJASKFDLÆJAKSDJKLÆFSDKJADSFJKLÆSDJ");
-          load(theMove.x, theMove.y, board); 
+          load(theMove.x, theMove.y, board);
         }
 
-        else 
+        else
         {
           turn = "x";
         }
 
         // vi prøver nu igen at vise hvilke nogen man kan klikke på
-        availableSpots(board, turn);      
+        availableSpots(board, turn);
 
         // hvis den anden person heller ikke kan gøre noget, starter vi altså bare forfra
-        if (!canMove){
+        if (!canMove)
+        {
           // dem der har flest point vinder
-          if (points[0]<points[1]){
+          if (points[0] < points[1])
+          {
             wins[1]++;
-          } else if (points[0]>points[1]){
+          }
+          else if (points[0] > points[1])
+          {
             wins[0]++;
           } // else: draw
           startup();
         }
       }
-    } 
+    }
   }
-  
+
   // point som hver spiller har. Hold
-  public int[] wins = {0,0};
-  public int[] points = {2, 2};
+  public int[] wins = { 0, 0 };
+  public int[] points = { 2, 2 };
 
   // metode der giver point til dem der har vundet.
-  public void countPoints(){
+  public void countPoints()
+  {
     points[0] = 0;
     points[1] = 0;
 
     // for hver position i brættet ser vi om det er x eller o og tæller.
-    foreach(string position in bræt){
-      if (position == "x"){
+    foreach (string position in bræt)
+    {
+      if (position == "x")
+      {
         points[0]++;
       }
-      else if (position == "o"){
+      else if (position == "o")
+      {
         points[1]++;
       }
     }
     return;
   }
 
-  public string possiblePos(string color) {
-    if(color=="x") {
-      return("X");
-    } else if(color=="o"){
-      return("O");
+  public string possiblePos(string color)
+  {
+    if (color == "x")
+    {
+      return ("X");
     }
-    else {
+    else if (color == "o")
+    {
+      return ("O");
+    }
+    else
+    {
       return ("gg");
     }
   }
 
   public bool canMove = true;
   // metode, der bestemmer alle pladser, hvor man kan lægge sin brik. Den 'farver' også alle de steder, hvor man kan lægge sin brik.
-  public void availableSpots(string[,] board, string color) 
+  public void availableSpots(string[,] board, string color)
   {
     // workaround lol
     string nColor = "";
-    if(color=="x"){
+    if (color == "x")
+    {
       nColor = "o";
-    } else {
+    }
+    else
+    {
       nColor = "x";
     }
 
@@ -303,26 +340,32 @@
 
     (int x, int y) pos;
     // tjekker bare for alle pladser: hvis der bliver vendt en brik når man lægger der, er det en mulig placering.
-    for (int row=0; row<8; row++){
+    for (int row = 0; row < 8; row++)
+    {
 
-      for (int column=0; column<8; column++){
+      for (int column = 0; column < 8; column++)
+      {
 
         pos.x = row;
         pos.y = column;
 
         // hvis der bliver vendt nogle brikker, når man ligger sin brik her.
-        if (turningDisks(board, pos, color).Count != 0) {
+        if (turningDisks(board, pos, color).Count != 0)
+        {
 
           // hvis brikken endda også er tom
-          if (board[row, column] == "-" || board[row, column] == possiblePos(nColor)){
+          if (board[row, column] == "-" || board[row, column] == possiblePos(nColor))
+          {
             board[row, column] = possiblePos(color);
 
             // hvis der er (mindst et M) på brættet, kan man altså godt placere en brik
             canMove = true;
           }
 
-        // hvis man ikke kan ligge en brik, men brikken er markeret, skal vi lige fjerne markeringen
-        } else if (board[row, column] == possiblePos(nColor)) {
+          // hvis man ikke kan ligge en brik, men brikken er markeret, skal vi lige fjerne markeringen
+        }
+        else if (board[row, column] == possiblePos(nColor))
+        {
           board[row, column] = "-";
         }
       }
@@ -337,9 +380,12 @@
   {
     // workaround igen
     string nColor = "";
-    if(color=="x"){
+    if (color == "x")
+    {
       nColor = "o";
-    } else {
+    }
+    else
+    {
       nColor = "x";
     }
 
@@ -347,57 +393,57 @@
     List<(int x, int y)> ret = new List<(int x, int y)>();
 
     // vi vil tjekke alle retninger, 
-    int [,] directions = {{0,1}, {1,1}, {1,0}, {1,-1}, {0,-1}, {-1,-1}, {-1,0}, {-1,1}};
+    int[,] directions = { { 0, 1 }, { 1, 1 }, { 1, 0 }, { 1, -1 }, { 0, -1 }, { -1, -1 }, { -1, 0 }, { -1, 1 } };
 
     // toBeMarked er listen med koordinater af alle ting der skal vendes til en ny farve
     // tempToBeMarked er alle dem, der 'måske' skal vendes.
     List<(int, int)> toBeMarked = new List<(int x, int y)>();
     List<(int, int)> tempToBeMarked = new List<(int x, int y)>();
-    
+
     int dir1;
     int dir2;
 
     int[] checkedCords = new int[2];
-    
+
 
     // kører følgende kode i hver retning
-    for (int i=0; i<8; i++) 
+    for (int i = 0; i < 8; i++)
     {
       tempToBeMarked = new List<(int x, int y)>();
       dir1 = directions[i, 0];
       dir2 = directions[i, 1];
 
       int j = 0; // index for hvor langt ud vi går 
-      while (true) 
+      while (true)
       {
         j++;
         // hvis vi er ude af brættet
-        if ( !(0<=diskPos.x+j*dir1 && diskPos.x+j*dir1<=7 && 0<=diskPos.y+j*dir2 && diskPos.y+j*dir2<=7) ) 
+        if (!(0 <= diskPos.x + j * dir1 && diskPos.x + j * dir1 <= 7 && 0 <= diskPos.y + j * dir2 && diskPos.y + j * dir2 <= 7))
         {
           break;
         }
 
         // hvis systemet tjekker en ensfarvet
-        if (board[diskPos.x+j*dir1, diskPos.y+j*dir2] == color) 
+        if (board[diskPos.x + j * dir1, diskPos.y + j * dir2] == color)
         {
           // tilføjer lige alle de diske der skal vendes.
-          foreach ((int, int) disk in tempToBeMarked) 
+          foreach ((int, int) disk in tempToBeMarked)
           {
-              toBeMarked.Add((disk.Item1, disk.Item2));
+            toBeMarked.Add((disk.Item1, disk.Item2));
           }
           break;
         }
 
         // hvis systemet tjekker en tom
-        else if (board[diskPos.x+j*dir1, diskPos.y+j*dir2] == "-" || board[diskPos.x+j*dir1, diskPos.y+j*dir2] == possiblePos(nColor) || board[diskPos.x+j*dir1, diskPos.y+j*dir2] == possiblePos(color)) 
+        else if (board[diskPos.x + j * dir1, diskPos.y + j * dir2] == "-" || board[diskPos.x + j * dir1, diskPos.y + j * dir2] == possiblePos(nColor) || board[diskPos.x + j * dir1, diskPos.y + j * dir2] == possiblePos(color))
         {
           break;
         }
 
         // hvis det er modstanderens brik
-        else 
+        else
         {
-          tempToBeMarked.Add((diskPos.x+j*dir1, diskPos.y+j*dir2));
+          tempToBeMarked.Add((diskPos.x + j * dir1, diskPos.y + j * dir2));
         }
 
       }
@@ -417,12 +463,13 @@
     //// fejlbeskeder
 
     // hvis ai ikke kan lave et move
-    if (diskPos.x == 99 || diskPos.x == 88){
+    if (diskPos.x == 99 || diskPos.x == 88)
+    {
       return ("AI kan ikke lave et move. Det er din tur igen");
     }
 
     // hvis brikken ikke kan ligge på brættet. Denne skal være før den næste fejlbesked
-    if (!(0<=diskPos.x && diskPos.x<=7 && 0<=diskPos.y && diskPos.y<=7))
+    if (!(0 <= diskPos.x && diskPos.x <= 7 && 0 <= diskPos.y && diskPos.y <= 7))
     {
       return ("Der er valgt en placering der ligger uden for brættet.");
     }
@@ -434,15 +481,16 @@
     }
 
     // hvis der allerede er en brik på den plads
-    else if (ret[diskPos.x, diskPos.y] != possiblePos(color)){
+    else if (ret[diskPos.x, diskPos.y] != possiblePos(color))
+    {
       return ("Du må ikke lægge der, denne placering er allerede optaget");
     }
 
     // opdater bræthistorikken 
-        opdateTidligereTræk(ttræk,atræk);
-        opdateTidligereTræk(atræk, ntræk);
-        opdateTidligereTræk(ntræk, board);
-    
+    opdateTidligereTræk(ttræk, atræk);
+    opdateTidligereTræk(atræk, ntræk);
+    opdateTidligereTræk(ntræk, board);
+
     // vi sætter toBeMarked til at være alle de brikker som skal vendes.
     List<(int x, int y)> toBeMarked = new List<(int x, int y)>();
     toBeMarked = turningDisks(board, diskPos, color);
@@ -454,7 +502,7 @@
     }
 
     // opdaterer brættet med det nye bræt
-    ret[diskPos.x, diskPos.y]=color;
+    ret[diskPos.x, diskPos.y] = color;
 
     // returnerer
     return ("");
@@ -496,57 +544,66 @@
 
   //metoder til at opdatere historik
 
-  public void opdateTidligereTræk(string [,] recieverBoard, string [,] senderBoard)
+  public void opdateTidligereTræk(string[,] recieverBoard, string[,] senderBoard)
+  {
+    for (int i = 0; i < 8; i++)
     {
-      for (int i = 0; i < 8; i++)
+      for (int j = 0; j < 8; j++)
       {
-        for (int j = 0; j < 8; j++)
-        {
-          recieverBoard[i, j] = senderBoard[i, j];
-        }
+        recieverBoard[i, j] = senderBoard[i, j];
       }
     }
+  }
 
 
 
-  // AI TIME
+  // AI TIME GG
 
   // brættets vægtinger (lidt selv fundet på, men tager udgangspunkt i kloge folk)
-  public int[,] boardWeight =  new int[8,8] {
+  // disse vægtninger afgør basically hvor 'gode' de forskellige felter er.
+  // naturligvis er hjørnerne gode, da de ikke kan tages tilbage. Derfor har den mange point
+  // lignende argumenter er lavet for alle de andre.
+  public int[,] boardWeight = new int[8, 8] {
     { 100, -10, 10, 6, 6, 10, -10, 100},
-    { -10, -20,  1, 2, 2,  1, -20, -10}, 
+    { -10, -20,  1, 2, 2,  1, -20, -10},
     {  10,   1,  5, 4, 4,  5,   1,  10},
     {   6,   2,  4, 2, 2,  4,   2,   6},
     {   6,   2,  4, 2, 2,  4,   2,   6},
     {  10,   1,  5, 4, 4,  5,   1,  10},
-    { -10, -20,  1, 2, 2,  1, -20, -10}, 
+    { -10, -20,  1, 2, 2,  1, -20, -10},
     { 100, -10, 10, 6, 6, 10, -10, 100}
   };
 
-  public (int x, int y) AImove(string [,] board, string color) {
-    List<int> pointsList = new List<int>();
 
-
+  // den metode der bliver kørt, når AI skal lave et move
+  public (int x, int y) AImove(string[,] board, string color)
+  {
     // definerer lige nColor til at være den modsatte farve
     string nColor = "";
-    if(color=="x"){
+    if (color == "x")
+    {
       nColor = "o";
-    } else {
+    }
+    else
+    {
       nColor = "x";
     }
-    
+
+    // en liste af alle de mulige træk.
     List<(int x, int y)> possibleMoves = new List<(int x, int y)>();
 
+    // vi gennemgår alle de mulige træk (de er jo markeret med "O" eller "X"), og adder dem til en liste:
 
-    // vi gennemgår alle de mulige træk (de er jo markeret med "O" eller "X"), og adder dem til en liste
-    (int X, int Y) pos = (0,0);
-    for (int row=0; row<8; row++){
+    // vi gennemgår hver row
+    for (int row = 0; row < 8; row++)
+    {
 
-      for (int column=0; column<8; column++){
-
-        pos.X = row;
-        pos.Y = column;
-        if(board[row, column] == "O" || board[row, column] == "X"){
+      // gennemgår hver column
+      for (int column = 0; column < 8; column++)
+      {
+        // hvis det er en gyldig plads
+        if (board[row, column] == "O" || board[row, column] == "X")
+        {
           possibleMoves.Add((row, column));
         }
       }
@@ -556,29 +613,41 @@
 
     int points = 0;
 
+    // represænterer de maksimale point man kan få, samt koordinaterne til den brik
     (int point, int x, int y) maxPointsAndCords = (-1000, 99, 88);
 
 
     // nu finder vi det træk, der giver AI flest point, og gemmer det i en variable, maxPointsAndCords
     // for hvert træk gennemgår vi hvor mange point man får. Den gemmer også det træk, der giver flest point. 
     // den gemmer også koordinaterne for det træk. 
-    foreach ((int x, int y) move in possibleMoves) {
+
+    // gennemgår hver muligt træk.
+    foreach ((int x, int y) move in possibleMoves)
+    {
+      // points repræsenterer hvor mang epoint den givne move giver.
       points = 0;
-      foreach ((int x, int y) turnedDisk in turningDisks(board, move, color)) {
-        points += 2*boardWeight[turnedDisk.x, turnedDisk.y];
+      // for hver brik man vender, får man point for at få den plads, men også de samme point for at modstanderen mister den
+      foreach ((int x, int y) turnedDisk in turningDisks(board, move, color))
+      {
+        points += 2 * boardWeight[turnedDisk.x, turnedDisk.y];
       }
+      // man får også point, for at man sætter sin brik hvor man gør
       points += boardWeight[move.x, move.y];
 
+
+      // til debugging.
       Console.Write("gg");
       Console.Write(points);
       Console.Write(move.x);
       Console.WriteLine(move.y);
 
-      if(points>=maxPointsAndCords.point) {
+      // 
+      if (points >= maxPointsAndCords.point)
+      {
         maxPointsAndCords = (points, move.x, move.y);
       }
     }
-     
+
     Console.WriteLine("-----");
 
     Console.Write(maxPointsAndCords.x);
