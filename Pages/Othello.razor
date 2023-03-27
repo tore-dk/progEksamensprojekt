@@ -469,7 +469,7 @@
     }
 
     // hvis brikken ikke kan ligge på brættet. Denne skal være før den næste fejlbesked
-    if (!(0 <= diskPos.x && diskPos.x <= 7 && 0 <= diskPos.y && diskPos.y <= 7))
+    else if (!(0 <= diskPos.x && diskPos.x <= 7 && 0 <= diskPos.y && diskPos.y <= 7))
     {
       return ("Der er valgt en placering der ligger uden for brættet.");
     }
